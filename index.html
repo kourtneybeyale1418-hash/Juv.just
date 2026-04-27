@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Juvenile Justice & Mental Health</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body {
+  margin:0;
+  font-family: Arial, sans-serif;
+  background:#050816;
+  color:white;
+  overflow-x:hidden;
+  scroll-behavior:smooth;
+}
+
+/* PARTICLES */
+canvas#bg {
+  position:fixed;
+  top:0; left:0;
+  width:100%;
+  height:100%;
+  z-index:-1;
+}
+
+/* SECTIONS */
+section {
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+}
+
+/* CARD */
+.card {
+  width:90%;
+  max-width:950px;
+  padding:30px;
+  background:rgba(255,255,255,0.08);
+  border-radius:20px;
+  backdrop-filter:blur(10px);
+  box-shadow:0 0 40px rgba(0,0,0,0.5);
+  opacity:0;
+  transform:translateY(40px);
+  transition:1s ease;
+}
+
+.card.show {
+  opacity:1;
+  transform:translateY(0);
+}
+
+h1,h2 { color:#38bdf8; }
+
+p { line-height:1.6; color:#e2e8f0; }
+
+/* NAV BUTTONS */
+.nav {
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  display:flex;
+  gap:10px;
+}
+
+button {
+  padding:10px 14px;
+  border:none;
+  border-radius:10px;
+  background:#38bdf8;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+/* SVG images */
+.svg {
+  width:100%;
+  height:200px;
+  margin-top:15px;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="bg"></canvas>
+
+<div class="nav">
+<button onclick="prev()">⬅</button>
+<button onclick="next()">➡</button>
+</div>
+
+<!-- 1 INTRO -->
+<section><div class="card">
+<h1>Juvenile Justice & Mental Health</h1>
+<p>San Juan County, New Mexico</p>
+<p>This project explains how poverty, brain development, trauma, and correctional systems affect youth mental health.</p>
+</div></section>
+
+<!-- 2 SAN JUAN COUNTY -->
+<section><div class="card">
+<h2>San Juan County, NM</h2>
+<p>• Rural region in northwestern New Mexico<br>
+• Includes part of Navajo Nation<br>
+• Poverty ~19–20% (higher for children)</p>
+
+<svg class="svg" viewBox="0 0 200 200">
+<circle cx="100" cy="100" r="80" fill="#1e293b"/>
+<path d="M100 20 L120 80 L180 80 L130 120 L150 180 L100 140 L50 180 L70 120 L20 80 L80 80 Z"
+fill="#38bdf8"/>
+</svg>
+
+</div></section>
+
+<!-- 3 POVERTY -->
+<section><div class="card">
+<h2>Poverty & Chronic Stress</h2>
+<p>Poverty creates constant stress from housing instability, food insecurity, and financial pressure.</p>
+<p>This leads to <b>toxic stress</b>, which affects brain development over time.</p>
+</div></section>
+
+<!-- 4 BRAIN -->
+<section><div class="card">
+<h2>Brain Development Effects</h2>
+<p><b>Prefrontal Cortex:</b> decision-making & impulse control</p>
+<p><b>Hippocampus:</b> memory & learning</p>
+<p><b>Amygdala:</b> fear & emotional response</p>
+
+<svg class="svg" viewBox="0 0 200 200">
+<ellipse cx="100" cy="100" rx="80" ry="60" fill="#1e293b"/>
+<circle cx="70" cy="90" r="10" fill="#38bdf8"/>
+<circle cx="130" cy="90" r="10" fill="#38bdf8"/>
+<path d="M70 130 Q100 160 130 130" stroke="#38bdf8" stroke-width="4" fill="none"/>
+</svg>
+
+</div></section>
+
+<!-- 5 TRAUMA -->
+<section><div class="card">
+<h2>Trauma in Youth</h2>
+<p>Many justice-involved youth experience:</p>
+<p>• Abuse<br>• Neglect<br>• Community violence<br>• Family instability</p>
+<p>Trauma increases risk of PTSD and emotional dysregulation.</p>
+</div></section>
+
+<!-- 6 JUSTICE SYSTEM -->
+<section><div class="card">
+<h2>Juvenile Justice System</h2>
+<p>Detention is not therapy.</p>
+<p>Without treatment, youth often experience:</p>
+<p>• Increased depression<br>• Anxiety<br>• Self-harm risk<br>• Recidivism (returning to system)</p>
+</div></section>
+
+<!-- 7 COs -->
+<section><div class="card">
+<h2>Correctional Officers (COs)</h2>
+<p>COs shape daily environment in detention centers.</p>
+<p>Harsh interactions can trigger trauma responses.</p>
+<p>Supportive interactions can improve emotional regulation.</p>
+</div></section>
+
+<!-- 8 PATHWAY -->
+<section><div class="card">
+<h2>Pathway Into Justice System</h2>
+<p>Poverty → Chronic stress → Brain changes → School issues → Juvenile justice involvement</p>
+</div></section>
+
+<!-- 9 SOLUTIONS -->
+<section><div class="card">
+<h2>Solutions</h2>
+<p>• Trauma-informed care<br>
+• Mental health access in rural areas<br>
+• School counseling<br>
+• Diversion programs (avoid detention)</p>
+</div></section>
+
+<!-- 10 CHARTS -->
+<section><div class="card">
+<h2>Data</h2>
+<canvas id="chart1"></canvas>
+</div></section>
+
+<section><div class="card">
+<h2>Mental Health Risk</h2>
+<canvas id="chart2"></canvas>
+</div></section>
+
+<script>
+
+/* ANIMATION */
+const cards = document.querySelectorAll('.card');
+const obs = new IntersectionObserver(e=>{
+  e.forEach(x=>{
+    if(x.isIntersecting) x.target.classList.add('show');
+  });
+},{threshold:0.3});
+
+cards.forEach(c=>obs.observe(c));
+
+/* NAV */
+let i=0;
+const sec=document.querySelectorAll("section");
+function go(x){sec[x].scrollIntoView({behavior:"smooth"});}
+function next(){i=Math.min(i+1,sec.length-1);go(i);}
+function prev(){i=Math.max(i-1,0);go(i);}
+
+/* CHARTS */
+new Chart(document.getElementById("chart1"),{
+type:"bar",
+data:{
+labels:["San Juan County","US Average"],
+datasets:[{
+label:"Poverty %",
+data:[20,12]
+}]
+}
+});
+
+new Chart(document.getElementById("chart2"),{
+type:"bar",
+data:{
+labels:["Justice Youth","General Youth"],
+datasets:[{
+label:"Mental Health Risk",
+data:[85,25]
+}]
+}
+});
+
+/* PARTICLES */
+const c=document.getElementById("bg");
+const ctx=c.getContext("2d");
+c.width=innerWidth;
+c.height=innerHeight;
+
+let p=Array.from({length:70},()=>({
+x:Math.random()*c.width,
+y:Math.random()*c.height,
+r:Math.random()*2,
+dx:(Math.random()-0.5),
+dy:(Math.random()-0.5)
+}));
+
+function anim(){
+ctx.clearRect(0,0,c.width,c.height);
+p.forEach(o=>{
+o.x+=o.dx;
+o.y+=o.dy;
+if(o.x<0||o.x>c.width)o.dx*=-1;
+if(o.y<0||o.y>c.height)o.dy*=-1;
+
+ctx.beginPath();
+ctx.arc(o.x,o.y,o.r,0,Math.PI*2);
+ctx.fillStyle="rgba(56,189,248,0.7)";
+ctx.fill();
+});
+requestAnimationFrame(anim);
+}
+anim();
+
+</script>
+
+</body>
+</html>
